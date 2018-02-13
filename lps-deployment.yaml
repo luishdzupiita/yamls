@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lps
+  labels:
+    app: lps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lps
+  volumes:
+  - name: dshm
+    emptyDir:
+      medium: Memory
+  template:
+    metadata:
+      labels:
+        app: lps
+    spec:
+      containers:
+      - name: lps
+        image: gcr.io/liveperson-stressor/lps-d:v1.0
+        volumeMounts: 
+          - mountPath: /dev/shm
+            name: dshm
+        ports:
+        - containerPort: 80
